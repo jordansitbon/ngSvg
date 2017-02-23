@@ -7,7 +7,7 @@ angular.module('ngSvg', [])
 		restrict: 'E',
 		link: function(scope, el, attrs) {
 			
-			var showSVG = function(svgTemplate, svgScope) {
+			var showSVG = function(svgTemplate, svgScope, svgPath) {
 				var newScope = scope.$new();
 				
 				angular.forEach(svgScope, function(value, key) {
@@ -16,7 +16,7 @@ angular.module('ngSvg', [])
 				
 				$http({
 					method: 'GET',
-					url: SVG_PATH+svgTemplate+'.svg'
+					url: (typeof svgPath != 'undefined' ? svgPath : SVG_PATH)+svgTemplate+'.svg'
 				}).then(
 					function successCallback(response) {
 						el.empty().append($compile(response.data)(newScope));
@@ -28,19 +28,21 @@ angular.module('ngSvg', [])
 						);
 					}
 				);
-				
-				console.log(svgTemplate, svgScope);
 			};
 			
 			scope.$watch(attrs.svgTemplate, function(svgTemplate) {
-				showSVG(svgTemplate, scope.$eval(attrs.svgScope));
+				showSVG(svgTemplate, scope.$eval(attrs.svgScope), scope.$eval(attrs.svgPath));
 			}, true);
 			
 			scope.$watch(attrs.svgScope, function(svgScope) {
-				showSVG(scope.$eval(attrs.svgTemplate), svgScope);
+				showSVG(scope.$eval(attrs.svgTemplate), svgScope, scope.$eval(attrs.svgPath));
 			}, true);
 			
-			return showSVG(scope.$eval(attrs.svgTemplate), scope.$eval(attrs.svgScope));
+			scope.$watch(attrs.svgPath, function(svgPath) {
+				showSVG(scope.$eval(attrs.svgTemplate), scope.$eval(attrs.svgScope), svgPath);
+			}, true);
+			
+			return showSVG(scope.$eval(attrs.svgTemplate), scope.$eval(attrs.svgScope), scope.$eval(attrs.svgPath));
 		}
 	};
 }]);
