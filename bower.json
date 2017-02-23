@@ -1,0 +1,20 @@
+{
+  "name": "ngSvg",
+  "version": "1.0",
+  "homepage": "http://www.lours-geek.com/",
+  "authors": [
+    "Jordan SITBON - l'Ours Geek"
+  ],
+  "description": "ngSvg compile SVG image or icon with AngularJS template engine.",
+  "keywords": [
+    "js",
+    "svg",
+    "angular",
+    "template"
+  ],
+  "dependencies": {
+    "angular": "1.*"
+  },
+  "main": "dist/ngSvg.js",
+  "license": "MIT"
+}

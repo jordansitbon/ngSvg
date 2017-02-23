@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.0-rc.0/angular.min.js"></script>
+		<script src="../dist/ngSvg.js"></script>
+	</head>
+	
+	<body ng-app="app" ng-controller="MainCtrl">
+		<div>
+			SVG :
+			<select ng-options="svg as svg.file for svg in svg_list track by svg.file" ng-model="svg_select"></select>
+		</div>
+		<div ng-repeat="(key,scope_el) in svg_select.formScope">
+			<label>{{scope_el.label}} : <input ng-model="svg_select.scope[key]" /></label>
+		</div>
+		<ng-svg svg-template="svg_select.file" svg-scope="svg_select.scope"></ng-svg>
+		<script>
+			angular.module('app', ['ngSvg'])
+
+			.constant('SVG_PATH', './svg/')
+			
+			.controller('MainCtrl', function($scope) {
+				$scope.svg_list = [
+					{
+						'file': 'dragon',
+						'formScope': {
+							'width': {'label': 'Taille'},
+							'color_1': {'label': 'Couleur 1',},
+							'color_2': {'label': 'Couleur 2'}
+						},
+						'scope': {
+							'width': 200,
+							'color_1': '#000000',
+							'color_2': '#ff0000'
+						}
+					},
+					{
+						'file': 'candy',
+						'formScope': {
+							'width': {'label': 'Taille'},
+							'color_1': {'label': 'Couleur 1',},
+							'color_2': {'label': 'Couleur 2'},
+							'show': {'label': 'Condition (0/1)'}
+						},
+						'scope': {
+							'width': 200,
+							'color_1': '#0b0',
+							'color_2': '#fcf',
+							'show': 1
+						}
+					},
+					{
+						'file': 'flower',
+						'formScope': {
+							'width': {'label': 'Taille'},
+							'color_1': {'label': 'Couleur 1',},
+							'color_2': {'label': 'Couleur 2',},
+							'color_3': {'label': 'Couleur 3',},
+							'color_4': {'label': 'Couleur 4',},
+							'color_5': {'label': 'Couleur 5'},
+							'color_6': {'label': 'Couleur 6'}
+						},
+						'scope': {
+							'width': 300,
+							'color_1': '#FF5A6A',
+							'color_2': '#FF5A6A',
+							'color_3': '#D40300',
+							'color_4': '#FE8095',
+							'color_5': '#00BB00',
+							'color_6': '#FE8095'
+						}
+					}
+				];
+				
+				$scope.svg_select = $scope.svg_list[0];
+			});
+		</script>
+	</body>
+
+</html>
