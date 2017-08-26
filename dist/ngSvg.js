@@ -4,6 +4,7 @@ angular.module('ngSvg', [])
 
 .directive('ngSvg', ['$http', 'SVG_PATH', '$compile', function($http, SVG_PATH, $compile) {
 	var svg_caches = {};
+	var svg_callbacks = {};
 	
 	var showSVG = function(svgTemplate, el, scope, svgScope, svgPath) {
 		var newScope = scope.$new();
@@ -11,6 +12,9 @@ angular.module('ngSvg', [])
 		angular.forEach(svgScope, function(value, key) {
 			newScope[key] = value;
 		});
+		
+		if (svg_callbacks[svgTemplate] == undefined)
+			svg_callbacks[svgTemplate] = [];
 		
 		if (typeof svg_caches[svgTemplate] == 'undefined') {
 			svg_caches[svgTemplate] = null;
@@ -20,8 +24,15 @@ angular.module('ngSvg', [])
 				url: (typeof svgPath != 'undefined' ? svgPath : SVG_PATH)+svgTemplate+'.svg'
 			}).then(
 				function successCallback(response) {
-					el.empty().append($compile(response.data)(newScope));
 					svg_caches[svgTemplate] = response.data;
+					el.empty().append($compile(response.data)(newScope));
+					
+					angular.forEach(svg_callbacks[svgTemplate], function(callback, key) {
+						if (typeof callback == 'function') {
+							callback(response.data);
+							svg_callbacks[svgTemplate].splice(key, 1);
+						}
+					});
 				},
 				function errorCallback(response) {
 					console.error(
@@ -30,7 +41,11 @@ angular.module('ngSvg', [])
 					);
 				}
 			);
-		} else if (svg_caches[svgTemplate] != null) {
+		} else if (svg_caches[svgTemplate] == null) {
+			svg_callbacks[svgTemplate].push(function(svg_data) {
+				el.empty().append($compile(svg_data)(newScope));
+			});
+		} else {
 			el.empty().append($compile(svg_caches[svgTemplate])(newScope));
 		}
 	};
