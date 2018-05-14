@@ -1,0 +1,26 @@
+{
+  "name": "ngsvg",
+  "version": "1.0.0",
+  "description": "ngSvg ===========",
+  "main": "dist/ngSvg.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jordansitbon/ngSvg.git"
+  },
+  "keywords": [
+    "angular",
+    "svg",
+    "ngsvg",
+    "jordansitbon",
+    "loursgeek"
+  ],
+  "author": "l'Ours Geek",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/jordansitbon/ngSvg/issues"
+  },
+  "homepage": "https://github.com/jordansitbon/ngSvg#readme"
+}
